@@ -1,5 +1,5 @@
 """
-This module handles the radiation transfer aspects of Qwind.
+This module handles the radiation transfer aspects of Dwind.
 """
 
 import numpy as np
@@ -423,7 +423,7 @@ class Radiation:
         force = abs_uv * constant * np.asarray([i_aux[0],i_aux[1], i_aux[-1]])
         assert force[2] >= 0
         return force
-    #能量
+    
     def force_energy(
         self,
         r,

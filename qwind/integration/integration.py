@@ -24,7 +24,7 @@ class Parameters(Structure):
 
 
 library_path = os.path.dirname(__file__)
-#多个导入
+#
 lib_1 = CDLL(os.path.join(library_path, "qwind_radiation.so"))
 lib_2 = CDLL(os.path.join(library_path, "energy.so"))
 lib_3 = CDLL(os.path.join(library_path, "prr.so"))
@@ -206,15 +206,4 @@ class IntegratorSimplesed:
         self.params.z = z
         r_int = p_zz_integrate_simplesed_z(byref(self.params))
         return [r_int]
-r=500
-z=200
-a=IntegratorSimplesed(
-            20,
-            6,
-            1400,
-            0,
-            1e-4,
-            0,
-            6,
-        )
-print(a.integrate_radiation(r, z),a.integrate_energy(r, z),a.integrate_p_rr(r, z),a.integrate_p_rphi(r, z),a.integrate_p_rz(r, z),a.integrate_p_phiphi(r, z),a.integrate_p_phiz(r, z),a.integrate_p_zz(r, z))
+

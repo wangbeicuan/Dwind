@@ -5,21 +5,7 @@ from qwind import constants
 import matplotlib.pyplot as plt
 from qwind import utils
 import time
-#r_min =eval(input('请输入最小半径：'))
-#r_max =eval(input('请输入最大半径：'))
-#fx=eval(input('请输入x射线占比：'))
-#rhoshielding=eval(input('请输入初始密度：'))
-#n=eval(input('请输入流线条数：'))
-#T0=eval(input('请输入温度：'))
-#vz=eval(input('请输入初始速度：'))
-#rho=eval(input('请输入流线初始密度:'))
-#example = wind.Qwind(lines_r_min =r_min, lines_r_max=r_max, f_x=fx, rho_shielding=rhoshielding,nr=n,T=T0)
-#line = example.line(r_0 = 150, rho_0 = 1e10, v_z_0 = 1e7,max_iter=1000)
-#line.iterate()
-#plt.plot(line.r_hist, line.z_hist)
-#plt.xlabel("R [Rg]")
-#plt.ylabel("z [Rg]")
-#plt.show()
+
 time_s=time.time()
 rho=5e7
 m=1e8

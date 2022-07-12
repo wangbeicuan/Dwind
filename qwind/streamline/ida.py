@@ -45,14 +45,7 @@ def force_gravity(r, z):
     array = np.array([r / d, z / d])
     grav = -1.0 / (d ** 2) * array
     return grav
-def rho_b(R_g,mdot,eta,v_z,r,z):
-    a=3*mdot*0.9/(2*eta*z)*(1-(6/r)**(1/2))
-    rho=1/(0.4*(v_z*const.C)**2)*(const.C**2*z/(r**3*R_g))*0.6*0.4**(2/3)*(0.03*a)**(5/3)*(1-a)**(-2/3)
-#*(1-2*3*mdot/(4*eta*z))**(-2/3)
-    return rho
-def T_b(f_uv,mdot,eddington_luminosity,R_g,eta,r):
-    T_0=(3*f_uv*mdot*eddington_luminosity/(8*const.PI*5.67051*10**(-5)*r**3*R_g**2*eta)*(1-np.sqrt(6/r)))**(1/4)
-    return T_0
+
 class streamline:
     """
     This class represents a streamline. It inherits from the wind class all the global properties of the accretion disc, black hole and atmosphere.
@@ -192,49 +185,50 @@ class streamline:
             fm=0,
             tau_uv=self.tau_uv,
         )[[0,1, -1]]
-#计算阻力
+#Calculate radiation drag
         f_energy=self.radiation.force_energy(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0,1, -1]]#修改
+        )[[0,1, -1]]
         p_r_r= self.radiation.force_p_rr(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         p_r_phi= self.radiation.force_p_rphi(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         p_r_z = self.radiation.force_p_rz(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         p_phi_phi = self.radiation.force_p_phiphi(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         p_phi_z = self.radiation.force_p_phiz(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         p_z_z = self.radiation.force_p_zz(
             r=self.r_0,
             z=self.z_0,
             fm=0,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]
+###
         centrifugal_term = self.l ** 2 / self.r_0 ** 3
         a_r = fgrav[0] + frad[0] + centrifugal_term
         a_z = fgrav[-1] + frad[-1]
@@ -368,7 +362,7 @@ class streamline:
        #     raise Stalling
 
     def residual(self, t, y, ydot):
-#修改
+
         r, z, v_r, v_z,v_phi = y
         r_dot, z_dot ,v_r_dot, v_z_dot,v_phi_dot = ydot
         a_T = np.sqrt(v_r_dot ** 2 + v_z_dot ** 2)
@@ -377,7 +371,7 @@ class streamline:
       #  r_dot, z_dot, v_r_dot, v_z_dot = ydot
        # a_T = np.sqrt(v_r_dot ** 2 + v_z_dot ** 2)
        # v_T = np.sqrt(r_dot ** 2 + z_dot ** 2)
-#相对论修正
+
         d=(r**2+z**2)**(0.5)
        # T =self.wind.T_eff(self.T0,d)  # * u.K
        # v_th = self.wind.thermal_velocity(T)
@@ -393,33 +387,33 @@ class streamline:
             no_tau_z=self.no_tau_z,
             no_tau_uv=self.no_tau_uv,
         )[[0,1,-1]]
-# 计算阻力
+# Calculate radiation drag
         f_energy = self.radiation.force_energy(
     r=r,
     z=z,
     fm=self.fm,
     tau_uv=self.tau_uv,
-)[[0, 1, -1]]  # 修改
-# 修改
+)[[0, 1, -1]]  
+
         p_r_r = self.radiation.force_p_rr(
     r=r,
     z=z,
     fm=self.fm,
     tau_uv=self.tau_uv,
-)[[0]]  # 修改
+)[[0]]  
         p_r_phi = self.radiation.force_p_rphi(
     r=r,
     z=z,
     fm=self.fm,
     tau_uv=self.tau_uv,
-)[[0]]  # 修改
+)[[0]]  
 
         p_r_z = self.radiation.force_p_rz(
     r=r,
     z=z,
     fm=self.fm,
     tau_uv=self.tau_uv,
-)[[0]]  # 修改
+)[[0]]  
         p_phi_phi = self.radiation.force_p_phiphi(
     r=r,
     z=z,
@@ -431,13 +425,14 @@ class streamline:
     z=z,
     fm=self.fm,
     tau_uv=self.tau_uv,
-)[[0]]  # 修改
+)[[0]]  
         p_z_z = self.radiation.force_p_zz(
     r=r,
     z=z,
     fm=self.fm,
     tau_uv=self.tau_uv,
-)[[0]]  # 修改
+)[[0]]
+###
         centrifugal_term = v_phi** 2 / r 
         a_r = fg[0] + centrifugal_term  # + fr[0]
         a_z = fg[-1]  # + fr[-1]
@@ -494,38 +489,38 @@ class streamline:
             self.fm,
             self.tau_uv,
         )[[0,1, -1]]
-        # 计算阻力
+        # Calculate radiation drag
         fr_energy = self.radiation.force_energy(
             r=r,
             z=z,
             fm=self.fm,
             tau_uv=self.tau_uv,
-        )[[0, 1, -1]]  # 修改
-# 修改
+        )[[0, 1, -1]]  
+
         pr_r_r = self.radiation.force_p_rr(
             r=r,
             z=z,
             fm=self.fm,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         pr_r_phi = self.radiation.force_p_rphi(
             r=r,
             z=z,
             fm=self.fm,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         pr_phi_phi = self.radiation.force_p_phiphi(
             r=r,
             z=z,
             fm=self.fm,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         pr_r_z = self.radiation.force_p_rz(
             r=r,
             z=z,
             fm=self.fm,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
         pr_z_z = self.radiation.force_p_zz(
             r=r,
             z=z,
@@ -537,7 +532,7 @@ class streamline:
             z=z,
             fm=self.fm,
             tau_uv=self.tau_uv,
-        )[[0]]  # 修改
+        )[[0]]  
 
         self.fr_r_hist.append(frad[0])
         self.fr_phi_hist.append(frad[1])
