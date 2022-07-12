@@ -74,12 +74,12 @@ class streamline:
         solver_atol=1e-3,
         integral_atol=0,
         integral_rtol=1e-3,
-        t_max=1000,
+        t_max=10000,
         d_max=1e3,
         no_tau_z=False,
         no_tau_uv=False,
         es_only=False,
-        max_iter=1000,
+        max_iter=10000,
     ):
         """
         Args:

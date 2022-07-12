@@ -42,7 +42,7 @@ class Qwind:
                  T=2e6,
                  mu=1,
                  modes=[],
-                 rho_shielding=5e10,
+                 rho_shielding=2e8,
                  intsteps=1,
                  nr=20,
                  d_max=3e3,
